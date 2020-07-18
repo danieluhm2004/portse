@@ -45,7 +45,7 @@ class Mapping():
                 return None
 
             os.system(
-                f'iptables -t nat -A PREROUTING -p tcp --dport {destination_port} -j DNAT --to {self.address}:{source_port}')
+                f'iptables -t nat -A PREROUTING -p {protocol} --dport {source_port} -j DNAT --to {self.address}:{destination_port}')
 
             mapped = mapping.get_mapping_by_port(source_port, protocol)
             return mapped
@@ -57,14 +57,17 @@ class Mapping():
         try:
             exists = mapping.get_mapping(
                 self.address, destination_port, protocol)
+
             if exists is None:
                 return True
 
-            os.system(
-                f'iptables -t nat -D PREROUTING -p tcp --dport {destination_port} -j DNAT --to {self.address}:{source_port}')
-
+            source_port = exists['source_port']
             success = mapping.delete_mapping(
                 self.address, destination_port, protocol)
+
+            os.system(
+                f'iptables -t nat -D PREROUTING -p {protocol} --dport {source_port} -j DNAT --to {self.address}:{destination_port}')
+
             return success
         except Exception as e:
             print('Cannot remove forward mapping. ', e)

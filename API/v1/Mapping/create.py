@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request
 
-from Portse.Mapping import Mapping
+from PortSe.Mapping import Mapping
 
 router = APIRouter()
 

@@ -1,3 +1,4 @@
+import os
 import sys
 
 import uvicorn
@@ -7,7 +8,7 @@ from config import host, port
 from MySQL import init_connection
 
 
-class PortseCore:
+class PortSeCore:
     def __init__(self, app):
         self.terminating = False
         self.app = app
@@ -21,8 +22,8 @@ class PortseCore:
         from pyfiglet import Figlet
         figlet = Figlet()
 
-        print(figlet.renderText('Portse'))
-        print('Project Portse : a RESTful API implementation for iptable based port forwarding')
+        print(figlet.renderText('PortSe'))
+        print('Project PortSe : a RESTful API implementation for iptable based port forwarding')
         print()
         print('Copyright (c) Daniel Uhm.')
         print('This software is distributed under Affero GNU Public License v3.')
@@ -58,6 +59,8 @@ class PortseCore:
 
         # Run API Server
         self.run_api_server(development_mode)
+
+        print('/proc/sys/net/ipv4/ip_forward setup')
 
         # Termination
         self.terminating = True
