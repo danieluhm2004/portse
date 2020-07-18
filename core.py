@@ -60,7 +60,5 @@ class PortSeCore:
         # Run API Server
         self.run_api_server(development_mode)
 
-        print('/proc/sys/net/ipv4/ip_forward setup')
-
         # Termination
         self.terminating = True
