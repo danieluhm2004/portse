@@ -1,3 +1,7 @@
+## Covers Project PortSe Specific Files
+# Config Files
+/config.py
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
