@@ -33,12 +33,9 @@ class Mapping():
         try:
             exists = mapping.get_mapping(
                 self.address, destination_port, protocol)
-            print(exists)
+
             if exists is not None:
                 return exists
-
-            os.system(
-                f'iptables -t nat -A PREROUTING -p tcp --dport {destination_port} -j DNAT --to {self.address}:{source_port}')
 
             source_port = Mapping.generate_port(protocol)
             success = mapping.create_mapping(
@@ -46,6 +43,9 @@ class Mapping():
 
             if success is None:
                 return None
+
+            os.system(
+                f'iptables -t nat -A PREROUTING -p tcp --dport {destination_port} -j DNAT --to {self.address}:{source_port}')
 
             mapped = mapping.get_mapping_by_port(source_port, protocol)
             return mapped
