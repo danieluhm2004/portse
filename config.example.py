@@ -1,5 +1,9 @@
 # The Glorious Config File
 
+# server endpoint
+host = '0.0.0.0'
+port = 8000
+
 # mysql server credentials
 mysql_credentials = {
     "host": "your-mysql-host",

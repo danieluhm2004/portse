@@ -2,8 +2,8 @@ import sys
 
 import uvicorn
 from API.v1 import router as _v1_router
+from config import host, port
 
-# Temp solution
 from MySQL import init_connection
 
 
@@ -35,11 +35,11 @@ class PortseCore:
         if development_mode:
             # development environment
             print('Running in development mode!')
-            uvicorn.run('main:app', host='127.0.0.1', port=8000, reload=True)
+            uvicorn.run('main:app', host=host, port=port, reload=True)
 
         else:
             # production environment
-            uvicorn.run(self.app, host='127.0.0.1', port=8000)
+            uvicorn.run(self.app, host=host, port=port)
 
     def connect_db(self):
 

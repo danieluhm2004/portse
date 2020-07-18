@@ -82,6 +82,3 @@ class Mapping():
                     return port
             except:
                 continue
-
-
-print(Mapping.generate_port('tcp'))
