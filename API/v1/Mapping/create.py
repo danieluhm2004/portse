@@ -5,9 +5,10 @@ from PortSe.Mapping import Mapping
 router = APIRouter()
 
 
+@router.get('/create/{protocol}')
 @router.get('/create/{destination_port}/{protocol}')
 @router.post('/{destination_port}/{protocol}')
-async def create_mapping(destination_port: int, protocol: str, req: Request):
+async def create_mapping(destination_port: int = None, protocol: str = None, req: Request = None):
     ''' Add Forward Mapping. '''
     address = req.client.host
 

@@ -31,13 +31,17 @@ class Mapping():
 
     def create(self, destination_port: int, protocol: str):
         try:
-            exists = mapping.get_mapping(
-                self.address, destination_port, protocol)
+            if destination_port is not None:
+                exists = mapping.get_mapping(
+                    self.address, destination_port, protocol)
 
-            if exists is not None:
-                return exists
+                if exists is not None:
+                    return exists
 
             source_port = Mapping.generate_port(protocol)
+            if destination_port is None:
+                destination_port = source_port
+
             success = mapping.create_mapping(
                 self.address, protocol, source_port, destination_port)
 
@@ -48,6 +52,7 @@ class Mapping():
                 f'iptables -t nat -A PREROUTING -p {protocol} --dport {source_port} -j DNAT --to {self.address}:{destination_port}')
 
             mapped = mapping.get_mapping_by_port(source_port, protocol)
+
             return mapped
         except Exception as e:
             print('Cannot add forward mapping. ', e)
@@ -83,5 +88,5 @@ class Mapping():
                 mapped = mapping.get_mapping_by_port(port, protocol)
                 if mapped is None:
                     return port
-            except:
+            except Exception as err:
                 continue
