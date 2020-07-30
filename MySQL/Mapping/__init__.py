@@ -7,6 +7,25 @@ class mapping:
     sql = ""
 
     @classmethod
+    def get_all_mapping(cls):
+        try:
+            connection = pymysql.connect(
+                **mysql_credentials, cursorclass=pymysql.cursors.DictCursor)
+
+            mapped = None
+            with connection.cursor() as cursor:
+                cls.sql = 'SELECT * FROM `mapping`;'
+                cursor.execute(cls.sql)
+
+                mapped = cursor.fetchall()
+
+            connection.commit()
+            return mapped
+        except Exception as e:
+            print("MySQL: get_all_mapping failed.", e, cls.sql)
+            return None
+
+    @classmethod
     def get_mapping_by_port(cls, source_port: int, protocol: str):
         if source_port is None or protocol is None:
             print('Mysql: Please write source_port and protocol.')

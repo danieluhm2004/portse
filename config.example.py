@@ -1,6 +1,7 @@
 # The Glorious Config File
 
 # server endpoint
+nif = 'eth0'
 host = '0.0.0.0'
 port = 8000
 

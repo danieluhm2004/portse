@@ -6,6 +6,7 @@ from API.v1 import router as _v1_router
 from config import host, port
 
 from MySQL import init_connection
+from PortSe.Mapping import Mapping
 
 
 class PortSeCore:
@@ -56,6 +57,9 @@ class PortSeCore:
 
         # Run DB Cache Service
         self.connect_db()
+
+        # Sync Iptable.
+        Mapping.sync()
 
         # Run API Server
         self.run_api_server(development_mode)

@@ -2,6 +2,7 @@ import os
 import random
 
 from MySQL.Mapping import mapping
+from config import nif
 
 
 class Mapping():
@@ -77,6 +78,28 @@ class Mapping():
         except Exception as e:
             print('Cannot remove forward mapping. ', e)
             return False
+
+    @staticmethod
+    def sync():
+        os.system('iptables -F')
+        os.system(f'iptables -t nat -A POSTROUTING -o {nif} -j MASQUERADE')
+
+        mappings = mapping.get_all_mapping()
+        for m in mappings:
+            source_port = m['source_port']
+            address = m['address']
+            destination_port = m['destination_port']
+            protocol = m['protocol']
+
+            try:
+                print(
+                    f'Routing {source_port} -> {address}:{destination_port}/{protocol}')
+
+                os.system(
+                    f'iptables -t nat -D PREROUTING -p {protocol} --dport {source_port} -j DNAT --to {address}:{destination_port}')
+            except:
+                print(
+                    f'Cannot routing {source_port}-> {address}:{destination_port}/{protocol}')
 
     @staticmethod
     def generate_port(protocol: str):
