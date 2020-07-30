@@ -96,10 +96,10 @@ class Mapping():
                     f'Routing {source_port} -> {address}:{destination_port}/{protocol}')
 
                 os.system(
-                    f'iptables -t nat -D PREROUTING -p {protocol} --dport {source_port} -j DNAT --to {address}:{destination_port}')
+                    f'iptables -t nat -A PREROUTING -p {protocol} --dport {source_port} -j DNAT --to {address}:{destination_port}')
             except:
                 print(
-                    f'Cannot routing {source_port}-> {address}:{destination_port}/{protocol}')
+                    f'Cannot routing {source_port} -> {address}:{destination_port}/{protocol}')
 
     @staticmethod
     def generate_port(protocol: str):
