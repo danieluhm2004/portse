@@ -2,7 +2,7 @@ import os
 import random
 
 from MySQL.Mapping import mapping
-from config import nif
+from config import nif, iptables_path
 
 
 class Mapping():
@@ -50,7 +50,7 @@ class Mapping():
                 return None
 
             os.system(
-                f'iptables -t nat -A PREROUTING -p {protocol} --dport {source_port} -j DNAT --to {self.address}:{destination_port}')
+                f'{iptables_path} -t nat -A PREROUTING -p {protocol} --dport {source_port} -j DNAT --to {self.address}:{destination_port}')
 
             mapped = mapping.get_mapping_by_port(source_port, protocol)
 
@@ -72,7 +72,7 @@ class Mapping():
                 self.address, destination_port, protocol)
 
             os.system(
-                f'iptables -t nat -D PREROUTING -p {protocol} --dport {source_port} -j DNAT --to {self.address}:{destination_port}')
+                f'{iptables_path} -t nat -D PREROUTING -p {protocol} --dport {source_port} -j DNAT --to {self.address}:{destination_port}')
 
             return success
         except Exception as e:
@@ -81,8 +81,8 @@ class Mapping():
 
     @staticmethod
     def sync():
-        os.system('iptables -F')
-        os.system(f'iptables -t nat -A POSTROUTING -o {nif} -j MASQUERADE')
+        os.system(f'{iptables_path} -F')
+        os.system(f'{iptables_path} -t nat -A POSTROUTING -o {nif} -j MASQUERADE')
 
         mappings = mapping.get_all_mapping()
         for m in mappings:
@@ -96,7 +96,7 @@ class Mapping():
                     f'Routing {source_port} -> {address}:{destination_port}/{protocol}')
 
                 os.system(
-                    f'iptables -t nat -A PREROUTING -p {protocol} --dport {source_port} -j DNAT --to {address}:{destination_port}')
+                    f'{iptables_path} -t nat -A PREROUTING -p {protocol} --dport {source_port} -j DNAT --to {address}:{destination_port}')
             except:
                 print(
                     f'Cannot routing {source_port} -> {address}:{destination_port}/{protocol}')

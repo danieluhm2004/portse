@@ -4,6 +4,7 @@
 nif = 'eth0'
 host = '0.0.0.0'
 port = 8000
+iptables_path = 'iptables'
 
 # mysql server credentials
 mysql_credentials = {
